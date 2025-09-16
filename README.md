@@ -23,8 +23,10 @@
 ### 2.1 Windows 
 1. Tải bộ cài tại: [https://datalust.co/download](https://datalust.co/download)  
 2. Cài đặt vào thư mục mong muốn, ví dụ: D:\Program Files\Seq
-3. Sau khi cài xong, thêm đường dẫn vào **Environment Variables** → `PATH`: D:\Program Files\Seq\ + `PATH`: D:\Program Files\Seq\Client\
-4. Mặc định chạy tại: [http://localhost:5341](http://localhost:5341). 
+3. Sau khi cài xong, thêm đường dẫn vào **Environment Variables**
+   - `PATH`: D:\Program Files\Seq\
+   - `PATH`: D:\Program Files\Seq\Client\
+5. Mặc định chạy tại: [http://localhost:5341](http://localhost:5341). 
 
 ### 2.2 Cài đặt bằng Docker
 Chạy container Seq với lệnh sau:
