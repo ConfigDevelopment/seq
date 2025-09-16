@@ -44,11 +44,12 @@ Các file logs được lưu vào wwwroot/Logs
 Cài các package cần thiết:
 
 ```bash
-dotnet add package Serilog.Enrichers.Environment
-dotnet add package Serilog.Enrichers.Thread
-dotnet add package Serilog.Enrichers.Process
-dotnet add package Serilog.Enrichers.ClientInfo
-dotnet add package Serilog.Enrichers.AspNetCore
+dotnet add package Serilog.AspNetCore 
+dotnet add package Serilog.Enrichers.Environment 
+dotnet add package Serilog.Enrichers.Thread 
+dotnet add package Serilog.Sinks.Console 
+dotnet add package Serilog.Sinks.File 
+dotnet add package Serilog.Sinks.Seq 
 ```
 ### 3.2 Cấu hình appsettings.json
 ```bash
