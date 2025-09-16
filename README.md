@@ -44,47 +44,61 @@ Các file logs được lưu vào wwwroot/Logs
 Cài các package cần thiết:
 
 ```bash
-dotnet add package Serilog.AspNetCore
-dotnet add package Serilog.Sinks.Seq
-dotnet add package Serilog.Sinks.File
+dotnet add package Serilog.Enrichers.Environment
+dotnet add package Serilog.Enrichers.Thread
+dotnet add package Serilog.Enrichers.Process
+dotnet add package Serilog.Enrichers.ClientInfo
+dotnet add package Serilog.Enrichers.AspNetCore
 ```
 ### 3.2 Cấu hình appsettings.json
 ```bash
 "Serilog": {
+  // Chọn các sink để ghi log (Console, File, Seq)
   "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File", "Serilog.Sinks.Seq" ],
+
+  // Mức log mặc định và tùy chỉnh theo namespace
   "MinimumLevel": {
-    "Default": "Information",
+    "Default": "Information",                // Ghi log từ mức Information trở lên
     "Override": {
-      "Microsoft": "Warning",
-      "Microsoft.AspNetCore": "Information",
-      "System": "Warning",
-      "Microsoft.EntityFrameworkCore": "Warning"
+      "Microsoft": "Warning",                // Bỏ bớt log lặt vặt từ Microsoft
+      "Microsoft.AspNetCore": "Information", // Vẫn log request/response ASP.NET
+      "System": "Warning",                   // Hạn chế log hệ thống
+      "Microsoft.EntityFrameworkCore": "Warning" // Tránh spam query EF
     }
   },
-  "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
+
+  // Thêm thông tin enrich vào log
+  "Enrich": [ 
+    "FromLogContext",   // Cho phép attach context (UserId, CorrelationId)
+    "WithMachineName",  // Ghi tên máy chạy app
+    "WithThreadId"      // Ghi thread id (debug đa luồng)
+  ],
+
+  // Gắn property mặc định cho toàn bộ log
   "Properties": {
-    "AppName": "my-aspnet-app"
+    "AppName": "my-aspnet-app" // Giúp phân biệt app khi nhiều app đẩy log vào Seq
   },
+
+  // Nơi ghi log (có thể nhiều sink)
   "WriteTo": [
-    { "Name": "Console" },
+    { "Name": "Console" }, // Log ra terminal / docker logs
     {
-      "Name": "File",
+      "Name": "File",      // Log ra file
       "Args": {
-        "path": "Logs/log-.txt",
-        "rollingInterval": "Day",
-        "retainedFileCountLimit": 30,
-        "shared": true
+        "path": "Logs/log-.txt",        // Đường dẫn log
+        "rollingInterval": "Day",       // Tạo file mới mỗi ngày
+        "retainedFileCountLimit": 30,   // Giữ tối đa 30 file log
+        "shared": true                  // Cho phép nhiều process ghi chung
       }
     },
     {
-      "Name": "Seq",
+      "Name": "Seq",       // Đẩy log tới Seq server
       "Args": {
-        "serverUrl": "http://localhost:5341"
+        "serverUrl": "http://localhost:5341" // URL Seq (local hoặc docker)
       }
     }
   ]
 }
-
 ```
 ### 3.3 Program.cs
 ```bash
