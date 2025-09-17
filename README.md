@@ -4,7 +4,10 @@
 - [1. Giới thiệu Seq](#1-giới-thiệu-seq)
 - [2. Cài đặt Seq](#2-cài-đặt-seq)  
   - [2.1 Windows](#21-windows)  
-  - [2.2 Docker](#23-docker)  
+  - [2.2 Docker](#23-docker)
+  - [2.3 Setting](#23-setting)
+    - [2.3.1 Local](#231-local)
+    - [2.3.2 IIS](#232-iis)
 - [3. Tích hợp Seq với ASP.NET Core](#3-tích-hợp-seq-với-aspnet-core)  
   - [3.1 Cài đặt NuGet](#31-cài-đặt-nuget)  
   - [3.2 Cấu hình appsettingsjson](#32-cấu-hình-appsettingsjson)  
@@ -38,12 +41,23 @@ docker run -d --name seq `
   -e SEQ_FIRSTRUN_ADMINPASSWORD=Password123 `
   -p 5341:80 datalust/seq:latest
 ```
-- Mật khẩu mặc định
+- Tài khoản và Mật khẩu mặc định
+```cmd
+admin
+```
 ```cmd
 Password123
 ```
 - Sau khi đănh nhập lần đầu tiên thì đổi mật khẩu
 
+### 2.3 Setting
+#### 2.3.1 Local
+- Sau khi hoàn thành các bước trên thì seq sẽ hiện lên UI setup
+![Seq Setup Screen](images/image1.png)
+![Seq Setup Screen](images/image2.png)
+![Seq Setup Username vs Password](images/image3.png)
+![Seq Dashboard](images/image4.png)
+#### 2.3.2 IIS
 ## 3. Tích hợp Seq với ASP.NET Core
 Các file logs được lưu vào wwwroot/Logs
 ### 3.1 Cài đặt NuGet
