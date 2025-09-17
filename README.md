@@ -30,13 +30,19 @@
 
 ### 2.2 Cài đặt bằng Docker
 Chạy container Seq với lệnh sau:
-
+- Lệnh
 ```bash
-docker run -d --name seq \
-  -e ACCEPT_EULA=Y \
-  -p 5341:80 \
-  datalust/seq:latest
+docker rm -f seq
+docker run -d --name seq `
+  -e ACCEPT_EULA=Y `
+  -e SEQ_FIRSTRUN_ADMINPASSWORD=Password123 `
+  -p 5341:80 datalust/seq:latest
 ```
+- Mật khẩu mặc định
+```cmd
+Password123
+```
+- Sau khi đănh nhập lần đầu tiên thì đổi mật khẩu
 
 ## 3. Tích hợp Seq với ASP.NET Core
 Các file logs được lưu vào wwwroot/Logs
