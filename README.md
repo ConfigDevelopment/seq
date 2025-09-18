@@ -55,7 +55,7 @@ Password123
 - Sau khi hoàn thành các bước trên thì seq sẽ hiện lên UI setup
 ![Seq Setup Screen](images/image1.png)
 ![Seq Setup Screen](images/image2.png)
-![Seq Setup Username vs Password](images/image3.png)
+![Seq Setup Username vs Password](images/image3.jpg)
 ![Seq Dashboard](images/image4.png)
 #### 2.3.2 IIS
 ## 3. Tích hợp Seq với ASP.NET Core
