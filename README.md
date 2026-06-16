@@ -4,10 +4,10 @@
 - [1. Giới thiệu Seq](#1-giới-thiệu-seq)
 - [2. Cài đặt Seq](#2-cài-đặt-seq)  
   - [2.1 Windows](#21-windows)  
-  - [2.2 Docker](#23-docker)
+  - [2.2 Docker](#22-cài-đặt-bằng-docker)
   - [2.3 Setting](#23-setting)
-    - [2.3.1 Local](#231-local)
-    - [2.3.2 IIS](#232-iis)
+    - [2.3.1 Cấu hình](#231-cấu-hình)
+    - [2.3.2 Các lệnh kiểm tra](#232-các-lệnh-kiểm-tra)
 - [3. Tích hợp Seq với ASP.NET Core](#3-tích-hợp-seq-với-aspnet-core)  
   - [3.1 Cài đặt NuGet](#31-cài-đặt-nuget)  
   - [3.2 Cấu hình appsettingsjson](#32-cấu-hình-appsettingsjson)  
@@ -51,14 +51,43 @@ Password123
 - Sau khi đănh nhập lần đầu tiên thì đổi mật khẩu
 
 ### 2.3 Setting
-#### 2.3.1 Local
+#### 2.3.1 Cấu hình
 - Sau khi hoàn thành các bước trên thì seq sẽ hiện lên UI setup
 - Nếu sau khi cài nó không hiện lên UI setup có thể search seq trên thanh tìm kiếm windown để mở
 ![Seq Setup Screen](images/image1.png)
 ![Seq Setup Screen](images/image2.png)
 ![Seq Setup Username vs Password](images/image3.jpg)
 ![Seq Dashboard](images/image4.png)
-#### 2.3.2 IIS
+#### 2.3.2 Các lệnh kiểm tra
+Dưới đây là các lệnh PowerShell giúp bạn kiểm tra trạng thái hoạt động và theo dõi log của Seq Server:
+- Kiểm tra trạng thái dịch vụ (Status Check)
+  - Đối với bản cài đặt Windows Service:
+    ```cmd
+    Get-Service -Name "Seq"
+    ```
+  - Đối với bản chạy bằng Docker:
+     ```cmd
+    docker ps --filter "name=seq"
+    ```
+- Kiểm tra Port kết nối
+     ```cmd
+    # Kiểm tra xem port 5341 đã được lắng nghe (Listen) chưa
+    Test-NetConnection -ComputerName localhost -Port 5341
+    ```
+     Nếu là True: Seq đã chạy và đang lắng nghe ở cổng 5341.
+  
+     Nếu là False: Seq chưa được bật hoặc cổng kết nối đang bị chặn.
+- Kiểm tra và theo dõi log hệ thống (Runtime Logs)
+  - Xem trực tiếp log vận hành của Seq bằng Docker:
+     ```cmd
+    # Theo dõi log thời gian thực của container Seq
+    docker logs -f seq
+    ```
+  - Kiểm tra file log local trên Windows (Nếu cài trực tiếp):
+     ```cmd
+    # Xem 20 dòng log mới nhất từ file log của hệ thống Seq
+    Get-Content -Path "C:\ProgramData\Seq\Logs\seq-*" -Tail 20 -Wait
+    ```
 ## 3. Tích hợp Seq với ASP.NET Core
 Các file logs được lưu vào wwwroot/Logs
 ### 3.1 Cài đặt NuGet
@@ -165,4 +194,19 @@ public class TestController : ControllerBase
 }
 
 ```
+## 4. Truy cập Seq
 
+Sau khi cài đặt và khởi động Seq, truy cập giao diện web theo URL tương ứng:
+
+| Môi trường | URL | Ghi chú |
+|------------|-----|---------|
+| Windows (cài trực tiếp) | http://localhost:5341 | Chạy mặc định sau khi cài |
+| Docker | http://localhost:5341 | Port 5341 được map ra ngoài |
+| Server / Remote | http://<IP-máy-chủ>:5341 | Thay `<IP-máy-chủ>` bằng IP thực |
+
+> **Lưu ý:**
+> - Đăng nhập bằng tài khoản `admin` và mật khẩu đã thiết lập ở bước cài đặt.
+> - Nếu không truy cập được, kiểm tra lại:
+>   - Dịch vụ Seq đã chạy chưa (xem [2.3.2 Các lệnh kiểm tra](#232-các-lệnh-kiểm-tra))
+>   - Firewall có đang chặn port `5341` không
+>   - Docker container có đang ở trạng thái `running` không
