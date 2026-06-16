@@ -53,6 +53,7 @@ Password123
 ### 2.3 Setting
 #### 2.3.1 Local
 - Sau khi hoàn thành các bước trên thì seq sẽ hiện lên UI setup
+- Nếu sau khi cài nó không hiện lên UI setup có thể search seq trên thanh tìm kiếm windown để mở
 ![Seq Setup Screen](images/image1.png)
 ![Seq Setup Screen](images/image2.png)
 ![Seq Setup Username vs Password](images/image3.jpg)
